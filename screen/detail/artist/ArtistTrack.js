@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, Text, View, FlatList, ScrollView, Image, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios'
 import Swiper from 'react-native-swiper'
+import ItemAlbum from './ItemArtistAlbum'
 
 class ArtistTrack extends Component {
 
     state = {
         isLoading: true,
+    }
+
+    _renderAlbumItem = ({ item }) => (
+        <TouchableOpacity onPress={() => this.gotoAlbumDetail(item)}>
+            <ItemAlbum
+                item={item}
+            />
+        </TouchableOpacity>
+    )
+
+    gotoAlbumDetail(item) {
+        this.props.navigation.navigate('AlbumDetail', { itemAlbum: item.id })
     }
 
     componentDidMount() {
@@ -17,11 +30,11 @@ class ArtistTrack extends Component {
 
         axios
             .get(
-                "https://api.deezer.com/artist/" + itemId
+                "https://api.deezer.com/artist/" + itemId + '/albums'
             )
             .then(({ data }) => {
                 this.setState({
-                    dataArtist: data,
+                    dataArtistAlbum: data,
                     isLoading: false
 
                 });
@@ -30,7 +43,7 @@ class ArtistTrack extends Component {
             .catch(error => {
                 console.log(error);
                 this.setState({
-                    dataArtist: [],
+                    dataArtistAlbum: [],
                     isLoading: true
                 });
             })
@@ -38,49 +51,47 @@ class ArtistTrack extends Component {
 
     render() {
 
-        // const { navigation } = this.props;
+        const { navigation } = this.props;
 
-        // if (this.state.isLoading) {
+        if (this.state.isLoading) {
             return (
                 <View style={styles.container}>
 
                 </View>
             )
-        // }
-        // let IconComponent = Ionicons;
-        // let itemArtist = this.state.dataArtist
-        // return (
-        //     <View style={styles.container}>
-        //         {/* <SafeAreaView style={styles.statusBar} />
-        //         <TouchableOpacity style={styles.appBar} onPress={() => navigation.goBack()}>
-        //             <IconComponent style={styles.backButton} name={'ios-arrow-back'} size={25} color={'white'} />
-        //         </TouchableOpacity> */}
+        }
+        let IconComponent = Ionicons;
+        let itemAlbums = this.state.dataArtistAlbum
+        return (
 
-        //         <ScrollView>
-        //             <Image style={styles.itemImage} source={{ uri: itemArtist.picture_medium}} />
-        //             <Text style={styles.textArtist} ellipsizeMode='tail' numberOfLines={1}>{itemArtist.name}</Text>
+            <ScrollView style={styles.container}>
 
-        //             <TouchableOpacity>
-        //                 <View style={styles.buttonPlay}>
-        //                     <Text style={styles.textButtonPlay}>Play</Text>
-        //                 </View>
-        //             </TouchableOpacity>
+                <Text style={styles.textTitle}>Albums</Text>
+                <FlatList
+                    data={this.state.dataArtistAlbum.data}
+                    renderItem={this._renderAlbumItem}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                />
 
-        //             <TouchableOpacity style={styles.itemGoto} >
-        //                 <IconComponent style={styles.backButton} name={'ios-musical-notes'} size={30} color={'white'} />
-        //                 <Text style={styles.textItemGoto}>See all {itemArtist.name}'s tracks</Text>
-        //             </TouchableOpacity>
+                <TouchableOpacity style={styles.itemGoto} >
+                    {/* <IconComponent style={styles.backButton} name={'ios-musical-notes'} size={30} color={'white'} />
+                    <Text style={styles.textItemGoto}>See all {itemArtist.name}'s tracks</Text> */}
+                </TouchableOpacity>
 
-        //         </ScrollView>
-        //     </View>
-        // )
+            </ScrollView>
+
+        )
     }
 }
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#191414',
-        flex: 1
+        flex: 1,
+        marginBottom: 20,
+        marginLeft: 20,
+        marginRight: 20,
     },
     statusBar: {
         backgroundColor: 'black',

@@ -10,70 +10,22 @@ class ArtistDes extends Component {
         isLoading: true,
     }
 
-    componentDidMount() {
-        // const { navigation } = this.props;
-        // const itemId = navigation.getParam('itemArtist');
-        const itemId = this.props.itemId
-
-        axios
-            .get(
-                "https://api.deezer.com/artist/" + itemId
-            )
-            .then(({ data }) => {
-                this.setState({
-                    dataArtist: data,
-                    isLoading: false
-
-                });
-                console.log(data)
-            })
-            .catch(error => {
-                console.log(error);
-                this.setState({
-                    dataArtist: [],
-                    isLoading: true
-                });
-            })
-    }
-
     render() {
 
         const { navigation } = this.props;
-
+        let IconComponent = Ionicons;
+        
         if (this.state.isLoading) {
             return (
                 <View style={styles.container}>
-
+                    
+                    <TouchableOpacity style={styles.itemGoto}>
+                        <IconComponent style={styles.backButton} name={'ios-share'} size={30} color={'white'} />
+                        <Text style={styles.textItemGoto}>Share</Text>
+                    </TouchableOpacity>
                 </View>
             )
         }
-        let IconComponent = Ionicons;
-        let itemArtist = this.state.dataArtist
-        return (
-            <View style={styles.container}>
-                {/* <SafeAreaView style={styles.statusBar} />
-                <TouchableOpacity style={styles.appBar} onPress={() => navigation.goBack()}>
-                    <IconComponent style={styles.backButton} name={'ios-arrow-back'} size={25} color={'white'} />
-                </TouchableOpacity> */}
-
-                <ScrollView>
-                    <Image style={styles.itemImage} source={{ uri: itemArtist.picture_medium}} />
-                    <Text style={styles.textArtist} ellipsizeMode='tail' numberOfLines={1}>{itemArtist.name}</Text>
-
-                    <TouchableOpacity>
-                        <View style={styles.buttonPlay}>
-                            <Text style={styles.textButtonPlay}>Play</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.itemGoto} >
-                        <IconComponent style={styles.backButton} name={'ios-musical-notes'} size={30} color={'white'} />
-                        <Text style={styles.textItemGoto}>See all {itemArtist.name}'s tracks</Text>
-                    </TouchableOpacity>
-
-                </ScrollView>
-            </View>
-        )
     }
 }
 

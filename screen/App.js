@@ -17,6 +17,7 @@ import ListDetail from './detail/ListDetail';
 import TrackDetail from './detail/TrackDetail';
 import ArtistDetail from './detail/ArtistDetail';
 import AlbumDetail from './detail/AlbumDetail';
+import ArtistTrack from './detail/artist/ArtistTrack'
 import InjectMain from './InjectMain'
 
 const TabNavigator = createBottomTabNavigator({
@@ -67,6 +68,7 @@ const MainNavigator = createStackNavigator(
     TrackDetail: { screen: TrackDetail },
     ArtistDetail: { screen: ArtistDetail },
     AlbumDetail: { screen: AlbumDetail },
+    ArtistTrack: {screen: ArtistTrack}
   },
   {
     initialRouteName: 'Root',

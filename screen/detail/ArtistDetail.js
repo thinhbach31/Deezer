@@ -2,33 +2,80 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios'
-import Swiper from 'react-native-swiper'
-import ArtistDes from './artist/ArtistPageDes'
+import ArtistDes from './artist/ArtistPageRelate'
 import ArtistTrack from './artist/ArtistTrack'
+import { PagerDotIndicator, IndicatorViewPager } from 'rn-viewpager';
 
 class ArtistDetail extends Component {
 
-    render() {
+    state = {
+        isLoading: true,
+    }
+
+    componentDidMount() {
         const { navigation } = this.props;
         const itemId = navigation.getParam('itemArtist');
+
+        axios
+            .get(
+                "https://api.deezer.com/artist/" + itemId
+            )
+            .then(({ data }) => {
+                this.setState({
+                    dataArtist: data,
+                    isLoading: false
+
+                });
+                console.log(data)
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({
+                    dataArtist: [],
+                    isLoading: true
+                });
+            })
+    }
+
+    _renderDotIndicator() {
+        return <PagerDotIndicator pageCount={2} />;
+    }
+
+    render() {
+        const { navigation } = this.props;
+        if (this.state.isLoading) {
+            return (
+                <View style={styles.container}>
+
+                </View>
+            )
+        }
+        const itemId = navigation.getParam('itemArtist');
         let IconComponent = Ionicons;
+        let itemArtist = this.state.dataArtist
         return (
-            <View>
+            <View style={styles.container}>
                 <SafeAreaView style={styles.statusBar} />
                 <TouchableOpacity style={styles.appBar} >
                     <IconComponent onPress={() => navigation.goBack()} style={styles.backButton} name={'ios-arrow-back'} size={25} color={'white'} />
                 </TouchableOpacity>
-                <Swiper>
-                    <ArtistDes itemId={itemId}>
 
-                    </ArtistDes>
+                <Image style={styles.itemImage} source={{ uri: itemArtist.picture_medium }} />
+                <Text style={styles.textArtist} ellipsizeMode='tail' numberOfLines={1}>{itemArtist.name}</Text>
+                <IndicatorViewPager style={{ height: 200, flex: 1 }} indicator={this._renderDotIndicator()}>
+                    <View>
+                        <ArtistTrack itemId={itemArtist.id}>
 
-                    <ArtistTrack >
+                        </ArtistTrack>
+                    </View>
+                    <View>
+                        <ArtistDes>
 
-                    </ArtistTrack>
-                </Swiper>
+                        </ArtistDes>
+                    </View>
+
+                </IndicatorViewPager>
             </View>
-
         )
     }
 }
