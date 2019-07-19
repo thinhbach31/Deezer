@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, FlatList, ScrollView, Image, TouchableOpacity } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios'
-import Swiper from 'react-native-swiper'
 import ItemAlbum from './ItemArtistAlbum'
 import ItemTrack from './ItemArtistTrack'
 
@@ -90,8 +88,6 @@ class ArtistTrack extends Component {
                 </View>
             )
         }
-        let IconComponent = Ionicons;
-        let itemAlbums = this.state.dataArtistAlbum
         return (
 
             <ScrollView style={styles.container}>
@@ -111,11 +107,6 @@ class ArtistTrack extends Component {
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                 />
-
-                <TouchableOpacity style={styles.itemGoto} >
-                    {/* <IconComponent style={styles.backButton} name={'ios-musical-notes'} size={30} color={'white'} />
-                    <Text style={styles.textItemGoto}>See all {itemArtist.name}'s tracks</Text> */}
-                </TouchableOpacity>
 
             </ScrollView>
 

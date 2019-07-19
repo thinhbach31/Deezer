@@ -9,7 +9,8 @@ class ItemAlbum extends Component {
                 <View>
                     <Image style={styles.itemImage} source={{ uri: item.cover_medium }} />
                     <Text style={styles.textTitle} ellipsizeMode='tail' numberOfLines={2}>{item.title}</Text>
-                    <Text style={styles.textArtist}>{item.artist.name}</Text>
+                    <Text style={styles.textArtist}
+                        onPress={() => this.props.onArtistClick()}>{item.artist.name}</Text>
                 </View>
             </View>
         )
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     },
     textArtist: {
         color: 'grey',
-        width:130,
+        width: 130,
         marginTop: 5,
         textDecorationLine: 'underline',
         fontSize: 14

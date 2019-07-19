@@ -15,6 +15,7 @@ class ArtistDetail extends Component {
     componentDidMount() {
         const { navigation } = this.props;
         const itemId = navigation.getParam('itemArtist');
+        console.log('artist detail', itemId)
 
         axios
             .get(

@@ -5021,6 +5021,11 @@ react-native-tab-view@^1.2.0, react-native-tab-view@^1.4.1:
   dependencies:
     prop-types "^15.6.1"
 
+react-native-text-ticker@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/react-native-text-ticker/-/react-native-text-ticker-0.18.0.tgz#a675b292661f3d8bec5c4c1ceae4e6ff03bbc750"
+  integrity sha512-6dosdquyDnAMeihboHp+AtuRr3SKmoDBKNQRB3SM2Umm/8olCaJbYa/eYN/tbbEoGWS9vYWaWyhUq1JFlM5c8g==
+
 react-native-vector-icons@^6.6.0:
   version "6.6.0"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-6.6.0.tgz#66cf004918eb05d90778d64bd42077c1800d481b"

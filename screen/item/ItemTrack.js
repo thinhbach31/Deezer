@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Image } from 'react-native';
+import { Platform, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
 class ItemTrack extends Component {
     render() {
-        item = this.props.item
+        itemArtist = this.props.item
         return (
+            <TouchableOpacity onPress={() => this.props.gotoTrackDetail()}>
             <View style={styles.itemTrack}>
                 <View>
-                    <Image style={styles.itemImage} source={{ uri: item.album.cover_medium }} />
-                    <Text style={styles.textTitle} ellipsizeMode='tail' numberOfLines={2}>{item.title}</Text>
-                    <Text style={styles.textArtist}>{item.artist.name}</Text>
+                    <Image style={styles.itemImage} source={{ uri: itemArtist.album.cover_medium }} />
+                    <Text style={styles.textTitle} ellipsizeMode='tail' numberOfLines={2}>{itemArtist.title}</Text>
+                    <Text style={styles.textArtist}
+                        onPress={() => this.props.onArtistClick()}>{itemArtist.artist.name}</Text>
                 </View>
             </View>
+            </TouchableOpacity>
         )
     }
 }
@@ -34,7 +37,7 @@ const styles = StyleSheet.create({
     },
     textArtist: {
         color: 'grey',
-        width:130,
+        width: 130,
         marginTop: 5,
         textDecorationLine: 'underline',
         fontSize: 14

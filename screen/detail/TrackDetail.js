@@ -12,7 +12,6 @@ class TrackDetail extends Component {
     componentDidMount() {
         const { navigation } = this.props;
         const itemId = navigation.getParam('itemTrack');
-
         axios
             .get(
                 "https://api.deezer.com/track/" + itemId
@@ -23,7 +22,7 @@ class TrackDetail extends Component {
                     isLoading: false
 
                 });
-                console.log(data)
+                
             })
             .catch(error => {
                 console.log(error);
@@ -35,11 +34,11 @@ class TrackDetail extends Component {
     }
 
     gotoArtistDetail(artistId) {
-        this.props.navigation.navigate('ArtistDetail', { itemArtist: artistId })
+        this.props.navigation.push('ArtistDetail', { itemArtist: artistId })
     }
 
     gotoAlbumDetail(albumId) {
-        this.props.navigation.navigate('AlbumDetail', { itemAlbum: albumId })
+        this.props.navigation.push('AlbumDetail', { itemAlbum: albumId })
     }
 
     _renderExplicit = () => {

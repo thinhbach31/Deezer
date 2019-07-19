@@ -31,7 +31,6 @@ class Home extends Component {
                     isLoading: false
 
                 });
-                console.log(data)
             })
             .catch(error => {
                 console.log(error);
@@ -43,16 +42,19 @@ class Home extends Component {
     };
 
     _renderTrackItem = ({ item }) => (
-        <TouchableOpacity onPress={() => this.gotoTrackDetail(item)}>
             <ItemTrack
+                gotoTrackDetail={() => this.gotoTrackDetail(item)}
+                onArtistClick={() => this.gotoArtistDetail(item.artist)}
                 item={item}
             />
-        </TouchableOpacity>
     )
 
     _renderAlbumItem = ({ item }) => (
-        <TouchableOpacity onPress={() => this.gotoAlbumDetail(item)}>
+        <TouchableOpacity onPress={() => {
+            this.gotoAlbumDetail(item)
+        }}>
             <ItemAlbum
+                onArtistClick={() => this.gotoArtistDetail(item.artist)}
                 item={item}
             />
         </TouchableOpacity>
@@ -83,11 +85,11 @@ class Home extends Component {
         this.props.navigation.navigate('AlbumDetail', { itemAlbum: item.id })
     }
 
-    gotoTrackDetail(item) {
+    gotoTrackDetail = (item) => {
         this.props.navigation.navigate('TrackDetail', { itemTrack: item.id })
     }
 
-    gotoArtistDetail(item) {
+    gotoArtistDetail = (item) => {
         this.props.navigation.navigate('ArtistDetail', { itemArtist: item.id })
     }
 
@@ -113,7 +115,7 @@ class Home extends Component {
                         <Text style={styles.textTitle}>Top chart:</Text>
                         <FlatList
                             data={this.state.data.tracks.data}
-                            renderItem={this._renderTrackItem}
+                            renderItem={this._renderTrackItem.bind(this)}
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}
                         />
