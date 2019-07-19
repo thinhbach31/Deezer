@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, Text, View, FlatList, ScrollView, Image, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios'
 import Swiper from 'react-native-swiper'
+import ItemRelated from './ItemArtistRelate'
 
 class ArtistDes extends Component {
 
@@ -10,29 +11,78 @@ class ArtistDes extends Component {
         isLoading: true,
     }
 
+    _renderRelatedItem = ({ item }) => (
+        <TouchableOpacity onPress={() => {
+                this.gotoArtistDetail(item)
+                
+            }}>
+            <ItemRelated
+                item={item}
+            />
+        </TouchableOpacity>
+    )
+
+    gotoArtistDetail(item) {
+        this.props.navigation.push('ArtistDetail', { itemArtist: item.id })
+    }
+
+    componentDidMount() {
+        const itemId = this.props.itemId
+
+        axios
+            .get(
+                "https://api.deezer.com/artist/" + itemId + '/related'
+            )
+            .then(({ data }) => {
+                this.setState({
+                    dataArtist: data,
+                    isLoading: false
+
+                });
+                console.log(data)
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({
+                    dataArtist: [],
+                    isLoading: true
+                });
+            })
+    }
+
+
     render() {
 
         const { navigation } = this.props;
         let IconComponent = Ionicons;
-        
+
         if (this.state.isLoading) {
             return (
-                <View style={styles.container}>
-                    
-                    <TouchableOpacity style={styles.itemGoto}>
-                        <IconComponent style={styles.backButton} name={'ios-share'} size={30} color={'white'} />
-                        <Text style={styles.textItemGoto}>Share</Text>
-                    </TouchableOpacity>
-                </View>
+                <View style={styles.container} />
             )
         }
+        return (
+            <View style={styles.container}>
+
+                <Text style={styles.textTitle}>Related artists</Text>
+                <FlatList
+                    data={this.state.dataArtist.data}
+                    renderItem={this._renderRelatedItem}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                />
+            </View>
+        )
+
     }
 }
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#191414',
-        flex: 1
+        marginBottom: 20,
+        marginLeft: 20,
+        marginRight: 20,
     },
     statusBar: {
         backgroundColor: 'black',

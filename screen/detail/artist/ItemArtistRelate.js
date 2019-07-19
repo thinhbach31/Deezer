@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Image } from 'react-native';
 
-class ItemAlbum extends Component {
+class ItemRelate extends Component {
     render() {
         item = this.props.item
         return (
             <View style={styles.itemTrack}>
                 <View>
-                    <Image style={styles.itemImage} source={{ uri: item.cover_medium }} />
-                    <Text style={styles.textTitle} ellipsizeMode='tail' numberOfLines={2}>{item.title}</Text>
+                    <Image style={styles.itemImage} source={{ uri: item.picture_medium}} />
+                    <Text style={styles.textTitle} ellipsizeMode='tail' numberOfLines={2}>{item.name}</Text>
                 </View>
             </View>
         )
@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ItemAlbum
+export default ItemRelate

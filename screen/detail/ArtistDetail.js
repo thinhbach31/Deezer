@@ -63,13 +63,13 @@ class ArtistDetail extends Component {
                 <Image style={styles.itemImage} source={{ uri: itemArtist.picture_medium }} />
                 <Text style={styles.textArtist} ellipsizeMode='tail' numberOfLines={1}>{itemArtist.name}</Text>
                 <IndicatorViewPager style={{ height: 200, flex: 1 }} indicator={this._renderDotIndicator()}>
-                    <View>
-                        <ArtistTrack itemId={itemArtist.id}>
+                    <View style={{ marginTop: 10, marginBottom: 10 }}>
+                        <ArtistTrack itemId={itemArtist.id} navigation={navigation}>
 
                         </ArtistTrack>
                     </View>
-                    <View>
-                        <ArtistDes>
+                    <View style={{ marginTop: 10, marginBottom: 10 }}>
+                        <ArtistDes itemId={itemArtist.id} navigation={navigation}>
 
                         </ArtistDes>
                     </View>

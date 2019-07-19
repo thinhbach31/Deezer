@@ -68,7 +68,6 @@ const MainNavigator = createStackNavigator(
     TrackDetail: { screen: TrackDetail },
     ArtistDetail: { screen: ArtistDetail },
     AlbumDetail: { screen: AlbumDetail },
-    ArtistTrack: {screen: ArtistTrack}
   },
   {
     initialRouteName: 'Root',

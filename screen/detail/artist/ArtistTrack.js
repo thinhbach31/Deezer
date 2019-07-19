@@ -4,11 +4,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios'
 import Swiper from 'react-native-swiper'
 import ItemAlbum from './ItemArtistAlbum'
+import ItemTrack from './ItemArtistTrack'
 
 class ArtistTrack extends Component {
 
     state = {
-        isLoading: true,
+        isLoadingAlbum: true,
+        isLoadingTrack: true,
     }
 
     _renderAlbumItem = ({ item }) => (
@@ -19,13 +21,23 @@ class ArtistTrack extends Component {
         </TouchableOpacity>
     )
 
+    _renderTrackItem = ({ item }) => (
+        <TouchableOpacity onPress={() => this.gotoTrackDetail(item)}>
+            <ItemTrack
+                item={item}
+            />
+        </TouchableOpacity>
+    )
+
     gotoAlbumDetail(item) {
         this.props.navigation.navigate('AlbumDetail', { itemAlbum: item.id })
     }
 
+    gotoTrackDetail(item) {
+        this.props.navigation.navigate('TrackDetail', { itemTrack: item.id })
+    }
+
     componentDidMount() {
-        // const { navigation } = this.props;
-        // const itemId = navigation.getParam('itemArtist');
         const itemId = this.props.itemId
 
         axios
@@ -35,7 +47,7 @@ class ArtistTrack extends Component {
             .then(({ data }) => {
                 this.setState({
                     dataArtistAlbum: data,
-                    isLoading: false
+                    isLoadingAlbum: false
 
                 });
                 console.log(data)
@@ -44,16 +56,34 @@ class ArtistTrack extends Component {
                 console.log(error);
                 this.setState({
                     dataArtistAlbum: [],
-                    isLoading: true
+                    isLoadingAlbum: true
+                });
+            })
+
+        axios
+            .get(
+                "https://api.deezer.com/artist/" + itemId + '/top'
+            )
+            .then(({ data }) => {
+                this.setState({
+                    dataArtistTrack: data,
+                    isLoadingTrack: false
+
+                });
+                console.log(data)
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({
+                    dataArtistTrack: [],
+                    isLoadingTrack: true
                 });
             })
     }
 
     render() {
 
-        const { navigation } = this.props;
-
-        if (this.state.isLoading) {
+        if (this.state.isLoadingAlbum || this.state.isLoadingTrack) {
             return (
                 <View style={styles.container}>
 
@@ -70,6 +100,14 @@ class ArtistTrack extends Component {
                 <FlatList
                     data={this.state.dataArtistAlbum.data}
                     renderItem={this._renderAlbumItem}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                />
+
+                <Text style={styles.textTitle}>Tracks</Text>
+                <FlatList
+                    data={this.state.dataArtistTrack.data}
+                    renderItem={this._renderTrackItem}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                 />
